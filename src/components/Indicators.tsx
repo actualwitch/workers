@@ -7,7 +7,6 @@ export const IndicatorSW = () => {
         const controller = navigator.serviceWorker.controller;
         setIsOn(Boolean(controller));
         const listener = ({ data }: MessageEvent<string>) => {
-            console.log(data);
             if (data === SW_INSTALLED) setIsOn(true);
         };
         const bc = new BroadcastChannel("main");

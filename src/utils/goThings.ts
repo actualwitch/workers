@@ -3,5 +3,5 @@ export const doThings = (delay = 1) => {
     do {
         if (new Date().valueOf() > stopAt) break;
     } while (true);
-    return "Done";
+    return `I waited ${delay}s and now I'm done`;
 };
