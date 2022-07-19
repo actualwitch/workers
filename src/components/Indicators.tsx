@@ -16,5 +16,5 @@ export const IndicatorSW = () => {
         return () => bc.removeEventListener("message", listener);
     }, []);
 
-    return <div>SW: {isOn ? "🙆‍♀️" : "🙅‍♀️"}</div>;
+    return <div>SW: {isOn ? "YES" : "NO"}</div>;
 };
