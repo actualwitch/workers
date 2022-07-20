@@ -24,6 +24,8 @@ const Page = styled.div`
 `;
 
 let id = 0;
+const bc = new BroadcastChannel("main");
+bc.addEventListener("message", ({ data }) => console.log(data));
 
 function App() {
     // const [files, setFiles] = useState<FileList | null>(null);
@@ -44,9 +46,9 @@ function App() {
         worker.addEventListener("message", listener);
     }, [worker, appendLog]);
     const longRunningAction = () => {
-        const result = doThings(delay);
-        appendLog(`Main thread: ${result}`)
-        // worker.postMessage({ id: id++, name: doThings.name, params: [delay] });
+        // const result = doThings(delay);
+        // appendLog(`Main thread: ${result}`)
+        worker.postMessage({ id: id++, name: "doThings", params: [delay] });
     };
     return (
         <Page>
@@ -56,9 +58,24 @@ function App() {
             </nav>
             <div>
                 <form
-                    action="/upload"
                     method="post"
                     encType="multipart/form-data"
+                    onSubmit={async (e) => {
+                        e.preventDefault();
+                        const form = e.currentTarget;
+
+                        try {
+                            const formData = new FormData(form);
+                            const response = await fetch("/upload", {
+                                method: "POST",
+                                body: formData,
+                            });
+
+                            console.log(response);
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    }}
                 >
                     <input type="file" accept="image/*" name="image" />
                     <button>send</button>
